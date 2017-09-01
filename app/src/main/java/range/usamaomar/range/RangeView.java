@@ -15,8 +15,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 /**
  * Created by usamaomar on 7/4/17.
@@ -88,6 +90,7 @@ public class RangeView extends RelativeLayout {
             View view = LayoutInflater.from(context).inflate(R.layout.activity_range_view, this);
             LinearLayout rootLinearLayout = (LinearLayout) view.findViewById(R.id.rootLinearLayout);
             LinearLayout subRootLinearLayout = (LinearLayout) view.findViewById(R.id.subRootLinearLayout);
+            LinearLayout txtRootLinearLayout = (LinearLayout) view.findViewById(R.id.txtRootLinearLayout);
             startedMargins = -ballSize;
             LinearLayout.LayoutParams layoutIndicator = new LinearLayout.LayoutParams((int) Util.convertDpToPixel(ballSize, context), (int) Util.convertDpToPixel(ballSize, context));
             final Button indicatorButton = new Button(context);
@@ -108,7 +111,13 @@ public class RangeView extends RelativeLayout {
             indicatorButton.setOnTouchListener(dragExperimentTouchListener);
             //
             for (int x = 0; x < rangeNumber; x++) {
-                LinearLayout.LayoutParams layout = new LinearLayout.LayoutParams(integerArrayList.get(1), (int) Util.convertDpToPixel(5, context));
+                LinearLayout.LayoutParams layout = null;
+                if (x == integerArrayList.size() - 2) {
+                    layout = new LinearLayout.LayoutParams(integerArrayList.get(1) - viewBetweenMargins, (int) Util.convertDpToPixel(5, context));
+                } else {
+                    layout = new LinearLayout.LayoutParams(integerArrayList.get(1), (int) Util.convertDpToPixel(5, context));
+                }
+
                 Button buttonRangeView = new Button(context);
                 final int buttonId = buttonRangeView.getId();
                 buttonRangeView.setTextColor(Color.WHITE);
@@ -116,7 +125,7 @@ public class RangeView extends RelativeLayout {
                 buttonRangeView.setLayoutParams(layout);
                 layout.setMargins(viewBetweenMargins, viewBetweenMargins, viewBetweenMargins, viewBetweenMargins);
                 int val = integerArrayList.get(x) - viewBetweenMargins;
-                integerArrayList.set(x, val);
+                integerArrayList.set(x, val - rangeNumber);
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) buttonRangeView.getLayoutParams();
                 subRootLinearLayout.addView(buttonRangeView, layoutParams);
                 buttonRangeView.setOnClickListener(new OnClickListener() {
@@ -144,6 +153,23 @@ public class RangeView extends RelativeLayout {
                     }
                 });
             }
+
+            for (int y = 0; y < integerArrayList.size(); y++) {
+                LinearLayout.LayoutParams layout = null;
+                if (y == integerArrayList.size() - 2) {
+                    layout = new LinearLayout.LayoutParams(integerArrayList.get(1) - (viewBetweenMargins + rangeNumber), (int) Util.convertDpToPixel(20, context));
+                } else {
+                    layout = new LinearLayout.LayoutParams(integerArrayList.get(1) + viewBetweenMargins , (int) Util.convertDpToPixel(20, context));
+                }
+                TextView textRangeView = new TextView(context);
+                final int textId = textRangeView.getId();
+                textRangeView.setTextColor(Color.BLACK);
+                textRangeView.setTextSize(15);
+                textRangeView.setText(String.format(Locale.getDefault(), "%s", y + 1));
+                textRangeView.setLayoutParams(layout);
+                txtRootLinearLayout.addView(textRangeView);
+            }
+
             LinearLayout.LayoutParams layoutParamsIndicator = (LinearLayout.LayoutParams) indicatorButton.getLayoutParams();
             rootLinearLayout.addView(indicatorButton, layoutParamsIndicator);
         }
