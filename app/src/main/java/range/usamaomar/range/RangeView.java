@@ -154,7 +154,7 @@ public class RangeView extends RelativeLayout {
                 });
             }
 
-            for (int y = 0; y < integerArrayList.size(); y++) {//https://im4.ezgif.com/tmp/ezgif-4-ed2c5f14e5.gif
+            for (int y = 0; y < integerArrayList.size(); y++) {
                 LinearLayout.LayoutParams layout = null;
                 if (y == integerArrayList.size() - 2) {
                     layout = new LinearLayout.LayoutParams(integerArrayList.get(1) - (viewBetweenMargins + rangeNumber), (int) Util.convertDpToPixel(20, context));
