@@ -36,7 +36,8 @@ public class RangeView extends RelativeLayout {
     private int viewBetweenMargins = 2;
     private int backGroundSrc;
     private Button buttonRangeView;
-
+    private float lastPos;
+    
     public RangeView(Context context) {
         super(context);
         this.context = context;
@@ -131,25 +132,11 @@ public class RangeView extends RelativeLayout {
                 buttonRangeView.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        int viewGetX = (int) view.getX();
-                        for (int x = 0; x < integerArrayList.size(); x++) {
-                            float ns = view.getX();
-                            if (viewGetX < integerArrayList.get(x)) {
-                                float n = view.getX();
-                                if (viewGetX > minListInt) {
-                                    int mud = (minListInt + integerArrayList.get(x)) / 2;
-                                    if (viewGetX < mud) {
-                                        dragExperimentTouchListener.goTo(indicatorButton.getY(), indicatorButton, (minListInt - (ballSize + viewBetweenMargins)));
-                                        break;
-                                    } else {
-                                        dragExperimentTouchListener.goTo(indicatorButton.getY(), indicatorButton, (integerArrayList.get(x) - (ballSize + viewBetweenMargins)));
-                                        break;
-                                    }
-                                }
-                            } else {
-                                minListInt = integerArrayList.get(x);
-                            }
-                        }
+                        float viewGetX = Math.round(view.getX());
+                        ObjectAnimator transAnimation= ObjectAnimator.ofFloat(indicatorButton, "translationX", lastPos,viewGetX);
+                        transAnimation.setDuration(100);//set duration
+                        transAnimation.start();
+                        lastPos = viewGetX;
                     }
                 });
             }
